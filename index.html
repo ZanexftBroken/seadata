@@ -522,6 +522,11 @@
         .date-search input {
             flex: 1;
         }
+        
+        /* Hidden fields */
+        .hidden-field {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -570,7 +575,7 @@
             <div id="searchContainer" class="search-container">
                 <h3 style="margin-bottom: 15px;">Search Database</h3>
                 <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="Type name, rank, or NRC number...">
+                    <input type="text" id="searchInput" placeholder="Type name, rank, or CDC number...">
                     <button id="searchSubmit" class="btn-primary">Search</button>
                 </div>
                 <div class="date-search">
@@ -609,29 +614,6 @@
                             <h4>OFFICER</h4>
                         </div>
                     </div>
-                    
-                    <!-- Crew Options -->
-                    <div class="sub-options" id="crewSubOptions">
-                        <h5>Crew Documents</h5>
-                        <div class="checkbox-row">
-                            <div class="checkbox-item"><input type="checkbox" id="ticket" name="crew" value="4-Ticket"> <label for="ticket">4-Ticket</label></div>
-                            <div class="checkbox-item"><input type="checkbox" id="pscCrew" name="crew" value="PSC"> <label for="pscCrew">PSC</label></div>
-                            <div class="checkbox-item"><input type="checkbox" id="tanker" name="crew" value="Tanker"> <label for="tanker">Tanker</label></div>
-                            <div class="checkbox-item"><input type="checkbox" id="cmcCrew" name="crew" value="CMC"> <label for="cmcCrew">CMC</label></div>
-                        </div>
-                    </div>
-                    
-                    <!-- Officer Options -->
-                    <div class="sub-options" id="officerSubOptions">
-                        <h5>Officer Documents</h5>
-                        <div class="checkbox-row">
-                            <div class="checkbox-item"><input type="checkbox" id="aff" name="officer" value="AFF"> <label for="aff">AFF</label></div>
-                            <div class="checkbox-item"><input type="checkbox" id="pscOfficer" name="officer" value="PSC"> <label for="pscOfficer">PSC</label></div>
-                            <div class="checkbox-item"><input type="checkbox" id="mfaCmc" name="officer" value="MFA/CMC"> <label for="mfaCmc">MFA/CMC</label></div>
-                            <div class="checkbox-item"><input type="checkbox" id="gdc" name="officer" value="G.D.C"> <label for="gdc">G.D.C</label></div>
-                            <div class="checkbox-item"><input type="checkbox" id="cdcOfficer" name="officer" value="C.D.C"> <label for="cdcOfficer">C.D.C</label></div>
-                        </div>
-                    </div>
                 </div>
                 
                 <div style="margin-top: 30px;">
@@ -645,6 +627,7 @@
                 <h2 class="form-title"><i class="fa-solid fa-user-pen"></i> New Profile Registration</h2>
                 <form id="profileForm">
                     <div class="form-grid">
+                        <!-- Common Fields for all types -->
                         <div class="form-group">
                             <label for="name">Full Name</label>
                             <input type="text" id="name" required>
@@ -654,27 +637,13 @@
                             <label for="rank">Rank</label>
                             <select id="rank" required>
                                 <option value="">Select Rank</option>
-                                <option value="D/R">D/R</option>
-                                <option value="E/R">E/R</option>
-                                <option value="ET/R">ET/R</option>
-                                <option value="G/S">G/S</option>
-                                <option value="C/CK">C/CK</option>
+                                <!-- Options will be populated based on selection -->
                             </select>
                         </div>
                         
                         <div class="form-group">
-                            <label for="nrc">NRC Number</label>
-                            <input type="text" id="nrc" placeholder="e.g., 12/ABC(N)123456" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="fatherName">Father's Name</label>
-                            <input type="text" id="fatherName" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="motherName">Mother's Name</label>
-                            <input type="text" id="motherName" required>
+                            <label for="cdcNumber">CDC Number</label>
+                            <input type="text" id="cdcNumber" required>
                         </div>
                         
                         <div class="form-group">
@@ -683,48 +652,8 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="birthdate">Birthdate (DD/MM/YYYY)</label>
-                            <input type="text" id="birthdate" placeholder="DD/MM/YYYY" required pattern="\d{2}/\d{2}/\d{4}">
-                        </div>
-                        
-                        <div class="form-group">
                             <label for="address">Address</label>
                             <textarea id="address" required rows="1"></textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="distinguishingMark">Distinguishing Mark</label>
-                            <input type="text" id="distinguishingMark" placeholder="Visible marks">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="fees">Fees Amount ($)</label>
-                            <input type="number" id="fees" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="feesPercentage">Payment Status (%)</label>
-                            <input type="number" id="feesPercentage" min="0" max="100" required>
-                            <div class="progress-bar">
-                                <div class="progress" id="feesProgress"></div>
-                            </div>
-                        </div>
-                        
-                        <!-- PSSR Section -->
-                        <div class="form-group">
-                            <label for="pssrName">PSSR Name</label>
-                            <input type="text" id="pssrName">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="pssrCDC">PSSR CDC Number</label>
-                            <input type="text" id="pssrCDC">
-                        </div>
-                        
-                        <!-- Tax and Passport -->
-                        <div class="form-group">
-                            <label for="taxNumber">Tax Number</label>
-                            <input type="text" id="taxNumber">
                         </div>
                         
                         <div class="form-group">
@@ -735,6 +664,50 @@
                         <div class="form-group">
                             <label for="passportExpiry">Passport Expiry Date</label>
                             <input type="text" id="passportExpiry" placeholder="DD/MM/YYYY">
+                        </div>
+                        
+                        <!-- NEW CDC Only Fields -->
+                        <div class="form-group hidden-field new-cdc-only">
+                            <label for="nrc">NRC Number</label>
+                            <input type="text" id="nrc" placeholder="e.g., 12/ABC(N)123456">
+                        </div>
+                        
+                        <div class="form-group hidden-field new-cdc-only">
+                            <label for="fatherName">Father's Name</label>
+                            <input type="text" id="fatherName">
+                        </div>
+                        
+                        <div class="form-group hidden-field new-cdc-only">
+                            <label for="motherName">Mother's Name</label>
+                            <input type="text" id="motherName">
+                        </div>
+                        
+                        <div class="form-group hidden-field new-cdc-only">
+                            <label for="birthdate">Birthdate (DD/MM/YYYY)</label>
+                            <input type="text" id="birthdate" placeholder="DD/MM/YYYY" pattern="\d{2}/\d{2}/\d{4}">
+                        </div>
+                        
+                        <div class="form-group hidden-field new-cdc-only">
+                            <label for="distinguishingMark">Distinguishing Mark</label>
+                            <input type="text" id="distinguishingMark" placeholder="Visible marks">
+                        </div>
+                        
+                        <div class="form-group hidden-field new-cdc-only">
+                            <label for="fees">Fees Amount ($)</label>
+                            <input type="number" id="fees">
+                        </div>
+                        
+                        <div class="form-group hidden-field new-cdc-only">
+                            <label for="feesPercentage">Payment Status (%)</label>
+                            <input type="number" id="feesPercentage" min="0" max="100">
+                            <div class="progress-bar">
+                                <div class="progress" id="feesProgress"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group hidden-field new-cdc-only">
+                            <label for="pssrName">PSSR Name</label>
+                            <input type="text" id="pssrName">
                         </div>
                         
                         <!-- Remark -->
@@ -758,8 +731,8 @@
                         <input type="hidden" id="profilePhoto">
                     </div>
 
-                    <!-- Original Checkbox Groups -->
-                    <div class="checkbox-group">
+                    <!-- Original Checkbox Groups - Only for NEW CDC -->
+                    <div class="checkbox-group hidden-field new-cdc-only">
                         <div class="checkbox-section">
                             <div class="checkbox-section-title">Core Documents</div>
                             <div class="checkbox-row">
@@ -868,8 +841,6 @@
         const revalidationSubOptions = document.getElementById('revalidationSubOptions');
         const crewOption = document.getElementById('crewOption');
         const officerOption = document.getElementById('officerOption');
-        const crewSubOptions = document.getElementById('crewSubOptions');
-        const officerSubOptions = document.getElementById('officerSubOptions');
         const confirmTitle = document.getElementById('confirmTitle');
         const cancelTitle = document.getElementById('cancelTitle');
 
@@ -879,6 +850,9 @@
         const capturePhoto = document.getElementById('capturePhoto');
         const retakePhoto = document.getElementById('retakePhoto');
         const profilePhoto = document.getElementById('profilePhoto');
+
+        // Form elements
+        const rankSelect = document.getElementById('rank');
 
         // Event listeners
         document.addEventListener('DOMContentLoaded', initApp);
@@ -1002,48 +976,39 @@
             e.preventDefault();
             
             const selectedCertificates = [];
-            document.querySelectorAll('input[name="certificates"]:checked').forEach(checkbox => {
-                selectedCertificates.push(checkbox.value);
-            });
-
-            // Get Crew documents
-            const crewDocuments = [];
-            document.querySelectorAll('input[name="crew"]:checked').forEach(checkbox => {
-                crewDocuments.push(checkbox.value);
-            });
-
-            // Get Officer documents
-            const officerDocuments = [];
-            document.querySelectorAll('input[name="officer"]:checked').forEach(checkbox => {
-                officerDocuments.push(checkbox.value);
-            });
+            if (selectedTitle === 'NEW CDC') {
+                document.querySelectorAll('input[name="certificates"]:checked').forEach(checkbox => {
+                    selectedCertificates.push(checkbox.value);
+                });
+            }
 
             const profile = {
                 name: document.getElementById('name').value,
                 rank: document.getElementById('rank').value,
-                nrc: document.getElementById('nrc').value,
-                fatherName: document.getElementById('fatherName').value,
-                motherName: document.getElementById('motherName').value,
+                cdcNumber: document.getElementById('cdcNumber').value,
                 phone: document.getElementById('phone').value,
-                birthdate: document.getElementById('birthdate').value,
                 address: document.getElementById('address').value,
-                distinguishingMark: document.getElementById('distinguishingMark').value,
-                fees: document.getElementById('fees').value,
-                feesPercentage: document.getElementById('feesPercentage').value,
-                certificates: selectedCertificates.join(', '),
-                title: selectedTitle,
-                revalidationType: selectedRevalidationType,
-                crew: crewDocuments.join(', '),
-                officer: officerDocuments.join(', '),
-                pssrName: document.getElementById('pssrName').value,
-                pssrCDC: document.getElementById('pssrCDC').value,
-                taxNumber: document.getElementById('taxNumber').value,
                 passportNumber: document.getElementById('passportNumber').value,
                 passportExpiry: document.getElementById('passportExpiry').value,
                 remark: document.getElementById('remark').value,
+                title: selectedTitle,
+                revalidationType: selectedRevalidationType,
                 profilePhoto: capturedPhoto,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             };
+
+            // Add NEW CDC specific fields
+            if (selectedTitle === 'NEW CDC') {
+                profile.nrc = document.getElementById('nrc').value;
+                profile.fatherName = document.getElementById('fatherName').value;
+                profile.motherName = document.getElementById('motherName').value;
+                profile.birthdate = document.getElementById('birthdate').value;
+                profile.distinguishingMark = document.getElementById('distinguishingMark').value;
+                profile.fees = document.getElementById('fees').value;
+                profile.feesPercentage = document.getElementById('feesPercentage').value;
+                profile.pssrName = document.getElementById('pssrName').value;
+                profile.certificates = selectedCertificates.join(', ');
+            }
 
             showLoading('Uploading to cloud...');
             try {
@@ -1069,35 +1034,45 @@
             showLoading('Generating CSV...');
             
             try {
-                let csvContent = "Name,Rank,NRC,Father's Name,Mother's Name,Phone,Birthdate,Address,Distinguishing Mark,Fees,Fees Percentage,Certificates,Title,Revalidation Type,Crew,Officer,PSSR Name,PSSR CDC,Tax Number,Passport Number,Passport Expiry,Remark\n";
+                let csvContent = "Name,Rank,CDC Number,Phone,Address,Passport Number,Passport Expiry,Title,Revalidation Type,Remark";
+                
+                // Add NEW CDC specific columns
+                if (profiles.some(p => p.title === 'NEW CDC')) {
+                    csvContent += ",NRC,Father's Name,Mother's Name,Birthdate,Distinguishing Mark,Fees,Fees Percentage,PSSR Name,Certificates";
+                }
+                
+                csvContent += "\n";
                 
                 profiles.forEach(profile => {
                     const row = [
                         `"${profile.name}"`,
                         `"${profile.rank}"`,
-                        `"${profile.nrc}"`,
-                        `"${profile.fatherName}"`,
-                        `"${profile.motherName}"`,
+                        `"${profile.cdcNumber}"`,
                         `"${profile.phone}"`,
-                        `"${profile.birthdate}"`,
                         `"${profile.address}"`,
-                        `"${profile.distinguishingMark || ''}"`,
-                        `"${profile.fees}"`,
-                        `"${profile.feesPercentage}"`,
-                        `"${profile.certificates || ''}"`,
-                        `"${profile.title || ''}"`,
-                        `"${profile.revalidationType || ''}"`,
-                        `"${profile.crew || ''}"`,
-                        `"${profile.officer || ''}"`,
-                        `"${profile.pssrName || ''}"`,
-                        `"${profile.pssrCDC || ''}"`,
-                        `"${profile.taxNumber || ''}"`,
                         `"${profile.passportNumber || ''}"`,
                         `"${profile.passportExpiry || ''}"`,
+                        `"${profile.title || ''}"`,
+                        `"${profile.revalidationType || ''}"`,
                         `"${profile.remark || ''}"`
-                    ].join(',');
+                    ];
                     
-                    csvContent += row + '\n';
+                    // Add NEW CDC specific data
+                    if (profile.title === 'NEW CDC') {
+                        row.push(
+                            `"${profile.nrc || ''}"`,
+                            `"${profile.fatherName || ''}"`,
+                            `"${profile.motherName || ''}"`,
+                            `"${profile.birthdate || ''}"`,
+                            `"${profile.distinguishingMark || ''}"`,
+                            `"${profile.fees || ''}"`,
+                            `"${profile.feesPercentage || ''}"`,
+                            `"${profile.pssrName || ''}"`,
+                            `"${profile.certificates || ''}"`
+                        );
+                    }
+                    
+                    csvContent += row.join(',') + '\n';
                 });
                 
                 const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -1161,13 +1136,9 @@
             if (type === 'CREW') {
                 crewOption.classList.add('active');
                 officerOption.classList.remove('active');
-                crewSubOptions.classList.add('active');
-                officerSubOptions.classList.remove('active');
             } else if (type === 'OFFICER') {
                 officerOption.classList.add('active');
                 crewOption.classList.remove('active');
-                officerSubOptions.classList.add('active');
-                crewSubOptions.classList.remove('active');
             }
         }
 
@@ -1194,12 +1165,6 @@
             revalidationSubOptions.classList.remove('active');
             crewOption.classList.remove('active');
             officerOption.classList.remove('active');
-            crewSubOptions.classList.remove('active');
-            officerSubOptions.classList.remove('active');
-            
-            // Reset checkboxes
-            document.querySelectorAll('input[name="crew"]').forEach(cb => cb.checked = false);
-            document.querySelectorAll('input[name="officer"]').forEach(cb => cb.checked = false);
         }
 
         function showForm() {
@@ -1218,7 +1183,66 @@
             capturePhoto.disabled = true;
             retakePhoto.disabled = true;
             
+            // Update form based on selection
+            updateFormFields();
+            
             formContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function updateFormFields() {
+            // Show/hide fields based on selection
+            const newCDCOnlyFields = document.querySelectorAll('.new-cdc-only');
+            
+            if (selectedTitle === 'NEW CDC') {
+                // Show NEW CDC specific fields
+                newCDCOnlyFields.forEach(field => {
+                    field.classList.remove('hidden-field');
+                });
+                
+                // Set rank options for NEW CDC
+                rankSelect.innerHTML = `
+                    <option value="">Select Rank</option>
+                    <option value="D/R">D/R</option>
+                    <option value="E/R">E/R</option>
+                    <option value="ET/R">ET/R</option>
+                    <option value="G/S">G/S</option>
+                    <option value="C/CK">C/CK</option>
+                `;
+            } else if (selectedTitle === 'REVALIDATION') {
+                // Hide NEW CDC specific fields
+                newCDCOnlyFields.forEach(field => {
+                    field.classList.add('hidden-field');
+                });
+                
+                // Set rank options based on revalidation type
+                if (selectedRevalidationType === 'OFFICER') {
+                    rankSelect.innerHTML = `
+                        <option value="">Select Officer Rank</option>
+                        <option value="Caption">Caption</option>
+                        <option value="C/10">C/10</option>
+                        <option value="2/0">2/0</option>
+                        <option value="3/0">3/0</option>
+                        <option value="C/E">C/E</option>
+                        <option value="2/E">2/E</option>
+                        <option value="3/E">3/E</option>
+                        <option value="4/E">4/E</option>
+                        <option value="E/E">E/E</option>
+                    `;
+                } else if (selectedRevalidationType === 'CREW') {
+                    rankSelect.innerHTML = `
+                        <option value="">Select Crew Rank</option>
+                        <option value="BSN">BSN</option>
+                        <option value="A/B">A/B</option>
+                        <option value="O/S">O/S</option>
+                        <option value="FTR">FTR</option>
+                        <option value="OLR">OLR</option>
+                        <option value="WPR">WPR</option>
+                        <option value="D/C">D/C</option>
+                        <option value="E/C">E/C</option>
+                        <option value="Cruise Crew">Cruise Crew</option>
+                    `;
+                }
+            }
         }
 
         function hideForm() {
@@ -1248,7 +1272,7 @@
             const filteredProfiles = profiles.filter(profile => 
                 (profile.name && profile.name.toLowerCase().includes(searchTerm)) ||
                 (profile.rank && profile.rank.toLowerCase().includes(searchTerm)) ||
-                (profile.nrc && profile.nrc.toLowerCase().includes(searchTerm))
+                (profile.cdcNumber && profile.cdcNumber.toLowerCase().includes(searchTerm))
             );
             
             displayProfiles(filteredProfiles);
@@ -1310,39 +1334,43 @@
                     <div class="card-body">
                         <div class="card-details">
                             <div class="card-detail">
-                                <span class="detail-label"><i class="fa-regular fa-id-card"></i> NRC</span>
-                                <span class="detail-value">${profile.nrc}</span>
+                                <span class="detail-label"><i class="fa-regular fa-id-card"></i> CDC</span>
+                                <span class="detail-value">${profile.cdcNumber}</span>
                             </div>
                             <div class="card-detail">
                                 <span class="detail-label"><i class="fa-solid fa-phone"></i> Phone</span>
                                 <span class="detail-value">${profile.phone}</span>
                             </div>
-                             <div class="card-detail">
+                            ${profile.title === 'NEW CDC' ? `
+                            <div class="card-detail">
                                 <span class="detail-label"><i class="fa-solid fa-wallet"></i> Fees</span>
-                                <span class="detail-value">$${profile.fees}</span>
+                                <span class="detail-value">$${profile.fees || '0'}</span>
                             </div>
                             <div class="card-detail" style="border:none; margin-top: 10px;">
                                 <span class="detail-label">Payment Completion</span>
-                                <span class="detail-value">${profile.feesPercentage}%</span>
+                                <span class="detail-value">${profile.feesPercentage || '0'}%</span>
                             </div>
                             <div class="progress-bar">
-                                <div class="progress" style="width: ${profile.feesPercentage}%; background: ${profile.feesPercentage < 100 ? (profile.feesPercentage < 50 ? '#f43f5e' : '#fbbf24') : '#2dd4bf'}"></div>
+                                <div class="progress" style="width: ${profile.feesPercentage || '0'}%; background: ${(profile.feesPercentage || 0) < 100 ? ((profile.feesPercentage || 0) < 50 ? '#f43f5e' : '#fbbf24') : '#2dd4bf'}"></div>
                             </div>
+                            ` : ''}
                         </div>
                     </div>
                 `;
                 
                 card.addEventListener('click', () => {
-                    const certText = profile.certificates ? `\n\n📜 Certificates:\n${profile.certificates}` : '';
                     const titleText = profile.title ? `\n\n📋 Document Type: ${profile.title}` : '';
                     const revalidationText = profile.revalidationType ? `\nRevalidation Type: ${profile.revalidationType}` : '';
-                    const crewText = profile.crew ? `\n\n👨‍✈️ Crew Documents:\n${profile.crew}` : '';
-                    const officerText = profile.officer ? `\n\n👨‍💼 Officer Documents:\n${profile.officer}` : '';
-                    const pssrText = profile.pssrName ? `\n\n📄 PSSR:\nName: ${profile.pssrName}\nCDC: ${profile.pssrCDC}` : '';
-                    const taxPassportText = profile.taxNumber || profile.passportNumber ? `\n\n📑 Tax & Passport:\nTax: ${profile.taxNumber || 'N/A'}\nPassport: ${profile.passportNumber || 'N/A'}\nExpiry: ${profile.passportExpiry || 'N/A'}` : '';
+                    const certText = profile.certificates ? `\n\n📜 Certificates:\n${profile.certificates}` : '';
+                    const pssrText = profile.pssrName ? `\n\n📄 PSSR:\nName: ${profile.pssrName}` : '';
+                    const passportText = profile.passportNumber ? `\n\n📑 Passport:\nNumber: ${profile.passportNumber}\nExpiry: ${profile.passportExpiry || 'N/A'}` : '';
                     const remarkText = profile.remark ? `\n\n💬 Remark:\n${profile.remark}` : '';
                     
-                    alert(`SEAMAN PROFILE\n------------------\nName: ${profile.name}\nRank: ${profile.rank}\nNRC: ${profile.nrc}\nPhone: ${profile.phone}\nBirthdate: ${profile.birthdate}\nAddress: ${profile.address}\n\nFAMILY\nFather: ${profile.fatherName}\nMother: ${profile.motherName}\n\nDETAILS\nMark: ${profile.distinguishingMark}\nFees Total: $${profile.fees}\nPaid: ${profile.feesPercentage}%${titleText}${revalidationText}${certText}${crewText}${officerText}${pssrText}${taxPassportText}${remarkText}`);
+                    // NEW CDC specific details
+                    const newCDCText = profile.title === 'NEW CDC' ? 
+                        `\n\n📝 NEW CDC Details:\nNRC: ${profile.nrc || 'N/A'}\nFather: ${profile.fatherName || 'N/A'}\nMother: ${profile.motherName || 'N/A'}\nBirthdate: ${profile.birthdate || 'N/A'}\nMark: ${profile.distinguishingMark || 'N/A'}\nFees: $${profile.fees || '0'}\nPaid: ${profile.feesPercentage || '0'}%` : '';
+                    
+                    alert(`SEAMAN PROFILE\n------------------\nName: ${profile.name}\nRank: ${profile.rank}\nCDC: ${profile.cdcNumber}\nPhone: ${profile.phone}\nAddress: ${profile.address}${titleText}${revalidationText}${newCDCText}${certText}${pssrText}${passportText}${remarkText}`);
                 });
                 
                 profileCards.appendChild(card);
